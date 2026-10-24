@@ -16,8 +16,7 @@ interface ShortUrl {
   created_at: string;
 }
 
-const API = import.meta.env.VITE_API_URL || "http://localhost:5003/api";
-const REDIRECT_BASE = (import.meta.env.VITE_REDIRECT_BASE || (import.meta.env.VITE_API_URL ? import.meta.env.VITE_API_URL.replace(/\/api\/?$/, '') : "http://localhost:5003")).replace(/\/+$/, '');
+const API = "http://localhost:5003/api";
 
 export default function App() {
   const [user, setUser] = useState<User | null>(null);
@@ -193,7 +192,7 @@ export default function App() {
   }
 
   function handleCopy(shortCode: string, id: number) {
-    const shortLink = `${REDIRECT_BASE}/r/${shortCode}`;
+    const shortLink = `http://localhost:5003/r/${shortCode}`;
 
     navigator.clipboard.writeText(shortLink);
     setCopyId(id);
@@ -328,11 +327,11 @@ export default function App() {
                     <div className="url-info">
                       <a
                         className="short-link"
-                        href={`${REDIRECT_BASE}/r/${u.short_code}`}
+                        href={`http://localhost:5003/r/${u.short_code}`}
                         target="_blank"
                         rel="noopener noreferrer"
                       >
-                        {REDIRECT_BASE.replace(/^https?:\/\//, '')}/r/{u.short_code}
+                        localhost:5003/r/{u.short_code}
                       </a>
 
                       <p className="original-url">{u.original_url}</p>

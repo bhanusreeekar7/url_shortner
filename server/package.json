@@ -6,8 +6,7 @@
   "scripts": {
     "dev": "tsx watch src/app.ts",
     "build": "tsc",
-    "start": "node dist/app.js",
-    "migrate": "tsx src/migrate.ts"
+    "start": "node dist/app.js"
   },
   "keywords": [],
   "type": "module",

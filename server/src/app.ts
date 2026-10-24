@@ -37,12 +37,11 @@ app.get('/health', (_req, res) => {
     res.status(200).json({ status: 'ok', service: 'snipurl-api' });
 });
 
-if (!process.env.VERCEL) {
-    const PORT = Number(process.env.PORT) || 5003;
-    app.listen(PORT, '0.0.0.0', () => {
-        console.log(`🚀 SnipURL Server running on port ${PORT}`);
-        console.log(`📡 Base redirect URL: ${process.env.BASE_URL || `http://localhost:${PORT}`}`);
-    });
-}
+const PORT = Number(process.env.PORT) || 5003;
+
+app.listen(PORT, '0.0.0.0', () => {
+    console.log(`🚀 SnipURL Server running on port ${PORT}`);
+    console.log(`📡 Base redirect URL: ${process.env.BASE_URL || `http://localhost:${PORT}`}`);
+});
 
 export default app;

@@ -6,14 +6,6 @@ import { authMiddleware } from "../middleware/auth.middleware.js";
 
 const authroutes = Router();
 
-const isProduction = process.env.NODE_ENV === 'production';
-const getCookieOptions = () => ({
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: (isProduction ? 'none' : 'lax') as 'none' | 'lax',
-    maxAge: 7 * 24 * 60 * 60 * 1000
-});
-
 authroutes.post('/register', async (req: Request, res: Response) => {
     const { name, email, password } = req.body;
     if (!name || !email || !password) {
@@ -42,7 +34,12 @@ authroutes.post('/register', async (req: Request, res: Response) => {
             { expiresIn: '7d' }
         );
 
-        res.cookie('token', token, getCookieOptions());
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         res.status(201).json({
             message: "User registered successfully",
@@ -82,7 +79,12 @@ authroutes.post('/login', async (req: Request, res: Response) => {
             { expiresIn: '7d' }
         );
 
-        res.cookie('token', token, getCookieOptions());
+        res.cookie('token', token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax',
+            maxAge: 7 * 24 * 60 * 60 * 1000
+        });
 
         res.status(200).json({
             message: "Login successful",
@@ -101,8 +103,8 @@ authroutes.post('/login', async (req: Request, res: Response) => {
 authroutes.post('/logout', (req: Request, res: Response) => {
     res.clearCookie('token', {
         httpOnly: true,
-        secure: isProduction,
-        sameSite: isProduction ? 'none' : 'lax'
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
     });
     res.status(200).json({ message: "Logged out successfully" });
 });
